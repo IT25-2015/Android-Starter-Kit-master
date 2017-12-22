@@ -1,0 +1,66 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    flavorDimensions "env"
+
+    productFlavors {
+        dev {
+            dimension "env"
+        }
+
+        qa {
+            dimension "env"
+        }
+
+        production {
+            dimension "env"
+        }
+    }
+
+    publishNonDefault true
+
+    buildTypes {
+        debug {
+            debuggable true
+            zipAlignEnabled false
+            minifyEnabled false
+        }
+        release {
+            debuggable false
+            zipAlignEnabled true
+            consumerProguardFile("proguard-rules.pro")
+        }
+    }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestApi('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    api 'com.android.support:appcompat-v7:25.1.1'
+    testApi 'junit:junit:4.12'
+
+    api project(':data')
+
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.9'
+
+    api 'org.parceler:parceler-api:1.1.8'
+}
